@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import java.awt.event.*;
 
@@ -32,30 +33,36 @@ public class AddEmployeesPage extends JPanel {
     }
 
     AddEmployeesPage() {
-        JLabel AddEmpLabel = new JLabel("First Name:");
-        add(AddEmpLabel);
-        JTextField AddEmpTextField = new JTextField((10));
-        add(AddEmpTextField);
+        JTextField empField1 = addTextField("First Name:");
+        JTextField empField2 = addTextField("Last Name:");
+        JTextField empField3 = addTextField("Year of Birth:");
+        JTextField empField4 = addTextField("Email:");
+        JTextField empField5 = addTextField("Role:");
 
-        JLabel AddEmpLabel2 = new JLabel("Last Name:");
-        add(AddEmpLabel2);
-        JTextField AddEmpTextField2 = new JTextField((10));
-        add(AddEmpTextField2);
+        // JLabel AddEmpLabel = new JLabel("First Name:");
+        // add(AddEmpLabel);
+        // JTextField AddEmpTextField = new JTextField((10));
+        // add(AddEmpTextField);
 
-        JLabel AddEmpLabel3 = new JLabel("Year of Birth:");
-        add(AddEmpLabel3);
-        JTextField AddEmpTextField3 = new JTextField((10));
-        add(AddEmpTextField3);
+        // JLabel AddEmpLabel2 = new JLabel("Last Name:");
+        // add(AddEmpLabel2);
+        // JTextField AddEmpTextField2 = new JTextField((10));
+        // add(AddEmpTextField2);
 
-        JLabel AddEmpLabel4 = new JLabel("Email:");
-        add(AddEmpLabel4);
-        JTextField AddEmpTextField4 = new JTextField((10));
-        add(AddEmpTextField4);
+        // JLabel AddEmpLabel3 = new JLabel("Year of Birth:");
+        // add(AddEmpLabel3);
+        // JTextField AddEmpTextField3 = new JTextField((10));
+        // add(AddEmpTextField3);
 
-        JLabel AddEmpLabel5 = new JLabel("Role:");
-        add(AddEmpLabel5);
-        JTextField AddEmpTextField5 = new JTextField((10));
-        add(AddEmpTextField5);
+        // JLabel AddEmpLabel4 = new JLabel("Email:");
+        // add(AddEmpLabel4);
+        // JTextField AddEmpTextField4 = new JTextField((10));
+        // add(AddEmpTextField4);
+
+        // JLabel AddEmpLabel5 = new JLabel("Role:");
+        // add(AddEmpLabel5);
+        // JTextField AddEmpTextField5 = new JTextField((10));
+        // add(AddEmpTextField5);
 
         JLabel ComboBoxTeams = new JLabel("Team:");
         add(ComboBoxTeams);
@@ -70,11 +77,11 @@ public class AddEmployeesPage extends JPanel {
         AddEmpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String FirstName = AddEmpTextField.getText();
-                String LastName = AddEmpTextField2.getText();
-                String YearOfBirth = AddEmpTextField3.getText();
-                String Email = AddEmpTextField4.getText();
-                String Role = AddEmpTextField5.getText();
+                String FirstName = empField1.getText();
+                String LastName = empField2.getText();
+                String YearOfBirth = empField3.getText();
+                String Email = empField4.getText();
+                String Role = empField5.getText();
                 String Team = AddEmpLabel6.getSelectedItem().toString();
                 try {
                     Class.forName("org.sqlite.JDBC");
@@ -96,13 +103,26 @@ public class AddEmployeesPage extends JPanel {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
-                AddEmpTextField.setText("");
-                AddEmpTextField2.setText("");
-                AddEmpTextField3.setText("");
-                AddEmpTextField4.setText("");
-                AddEmpTextField5.setText("");
+                empField1.setText("");
+                empField2.setText("");
+                empField3.setText("");
+                empField4.setText("");
+                empField5.setText("");
             }
         });
+    }
+
+    public void addField(String name, JComponent component) {
+        JPanel panel = new JPanel();
+        panel.add(new JLabel(name));
+        panel.add(component);
+        add(panel);
+    }
+  
+    public JTextField addTextField(String name) {
+        JTextField textField = new JTextField(10);
+        addField(name, textField);
+        return textField;
     }
 }
 

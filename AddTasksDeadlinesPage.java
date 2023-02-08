@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import java.awt.event.*;
 import java.sql.Connection;
@@ -51,19 +52,22 @@ public class AddTasksDeadlinesPage extends JPanel {
         add(ComboBoxTD);
 
         JComboBox AddEmpLabel6 = new JComboBox();
-        teamListLable = AddEmpLabel6;
-        add(AddEmpLabel6);
-        refreshTeamList();
+                teamListLable = AddEmpLabel6;
+                add(AddEmpLabel6);
+                refreshTeamList();
 
-        JLabel AddTDLabel = new JLabel("Enter Task Name:");
-        add(AddTDLabel);
-        JTextField AddTDTextField = new JTextField((10));
-        add(AddTDTextField);
+        JTextField tdField1 = addTextField("Enter Task Name:");
+        JTextField tdField2 = addTextField("Enter Deadline:");
+        
+        // JLabel AddTDLabel = new JLabel("Enter Task Name:");
+        // add(AddTDLabel);
+        // JTextField AddTDTextField = new JTextField((10));
+        // add(AddTDTextField);
 
-        JLabel AddTDLabel2 = new JLabel("Enter Deadline Date:");
-        add(AddTDLabel2);
-        JTextField AddTDTextField2 = new JTextField((10));
-        add(AddTDTextField2);
+        // JLabel AddTDLabel2 = new JLabel("Enter Deadline Date:");
+        // add(AddTDLabel2);
+        // JTextField AddTDTextField2 = new JTextField((10));
+        // add(AddTDTextField2);
 
         JButton AddTDButton = new JButton("Submit");
         add(AddTDButton);
@@ -71,8 +75,8 @@ public class AddTasksDeadlinesPage extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = AddEmpLabel6.getSelectedItem().toString();
-                String task = AddTDTextField.getText();
-                String deadline = AddTDTextField2.getText();
+                String task = tdField1.getText();
+                String deadline = tdField2.getText();
                 try {
                     Class.forName("org.sqlite.JDBC");
                     Connection connection = DriverManager.getConnection("jdbc:sqlite:Mydb.db");
@@ -90,9 +94,22 @@ public class AddTasksDeadlinesPage extends JPanel {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
-                AddTDTextField.setText("");
-                AddTDTextField2.setText("");
+                tdField1.setText("");
+                tdField2.setText("");
             }
         });
+    }
+
+    public void addField(String name, JComponent component) {
+        JPanel panel = new JPanel();
+        panel.add(new JLabel(name));
+        panel.add(component);
+        add(panel);
+    }
+  
+    public JTextField addTextField(String name) {
+        JTextField textField = new JTextField(10);
+        addField(name, textField);
+        return textField;
     }
 }

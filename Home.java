@@ -5,6 +5,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+
 import java.awt.event.*;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -165,4 +167,20 @@ public class Home extends JPanel {
             e1.printStackTrace();
         }
     }
+
+    //METHODS FOR CREATING JCOMPONENTS
+    public void addField(String name, JComponent component) {
+        JPanel panel = new JPanel();
+        panel.add(new JLabel(name));
+        panel.add(component);
+        add(panel);
+    }
+
+    public JTextField addTextField(String name) {
+        JTextField textField = new JTextField(10);
+        addField(name, textField);
+        return textField;
+    }
+
+    //JTextField test1 = addTextField("Test Name: ");
 }
