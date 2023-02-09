@@ -31,21 +31,6 @@ public class AddTasksDeadlinesPage extends JPanel {
         }
     }
 
-    // void refreshTeam2List() {
-    //     try {
-    //         Class.forName("org.sqlite.JDBC");
-    //         Connection conn = DriverManager.getConnection("jdbc:sqlite:Mydb.db");
-    //         Statement statement = conn.createStatement();
-    //         ResultSet resultSet = statement.executeQuery("SELECT name FROM teams2");
-    //         teamListLable.removeAllItems();
-    //         while (resultSet.next()) {
-    //             teamListLable.addItem(resultSet.getString("name"));
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
     AddTasksDeadlinesPage() {
 
         JLabel ComboBoxTD = new JLabel("Team:");
@@ -80,6 +65,22 @@ public class AddTasksDeadlinesPage extends JPanel {
                 try {
                     Class.forName("org.sqlite.JDBC");
                     Connection connection = DriverManager.getConnection("jdbc:sqlite:Mydb.db");
+                    //write a statement make sure task or deadline isnt empty
+                    if (task.isEmpty() || deadline.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please fill all fields");
+                        return;
+                    }
+                    //if the user tries to add another task to a team that already has a task display an error message
+                    PreparedStatement statement2 = connection.prepareStatement(
+                        "SELECT * FROM teams2 WHERE name = ?");
+                    statement2.setString(1, name);
+                    ResultSet resultSet = statement2.executeQuery();
+                    if (resultSet.next()) {
+                        JOptionPane.showMessageDialog(null, "Team already has a task, if you want to change it please delete it first");
+                        connection.close();
+                        return;
+                    }
+                    
                     PreparedStatement statement = connection.prepareStatement(
                         "INSERT INTO teams2 (name, task, deadline) VALUES (?, ?, ?)");
                     statement.setString(1, name);

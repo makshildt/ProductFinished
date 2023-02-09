@@ -86,6 +86,28 @@ public class AddEmployeesPage extends JPanel {
                 try {
                     Class.forName("org.sqlite.JDBC");
                     Connection connection = DriverManager.getConnection("jdbc:sqlite:Mydb.db");
+                    //write an if statement make sure no fields are empty
+                    if (FirstName.isEmpty() || LastName.isEmpty() || YearOfBirth.isEmpty() || Email.isEmpty() || Role.isEmpty() || Team.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please fill in all fields");
+                        return;
+                    }
+                    //write an if statement to make sure the year of birth is a number
+                    try {
+                        Integer.parseInt(YearOfBirth);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Year of Birth must be a number");
+                        return;
+                    }
+                    //write an if statement to make sure email is unique
+                    Statement statement1 = connection.createStatement();
+                    ResultSet resultSet = statement1.executeQuery("SELECT email FROM employees");
+                    while (resultSet.next()) {
+                        if (resultSet.getString("email").equals(Email)) {
+                            JOptionPane.showMessageDialog(null, "Email already exists");
+                            empField4.setText("");
+                            return;
+                        }
+                    }
                     PreparedStatement statement = connection.prepareStatement(
                             "INSERT INTO employees (first_name, last_name, year_of_birth, email, role, team) VALUES (?, ?, ?, ?, ?, ?)");
                     statement.setString(1, FirstName);

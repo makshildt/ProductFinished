@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class AddTeamsPage extends JPanel {
     AddTeamsPage() {
@@ -27,6 +28,22 @@ public class AddTeamsPage extends JPanel {
               try {
                 Class.forName("org.sqlite.JDBC");
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:mydb.db");
+                if (teamName.equals("")) {
+                  JOptionPane.showMessageDialog(null, "Please enter a team name");
+                  return;
+                }
+                //write an elseif statement to check if the team name already exists in the teams table
+                //if it does, display a message saying "Team already exists"
+                //if it doesn't, add the team to the teams table
+                PreparedStatement statement2 = connection.prepareStatement("SELECT name FROM teams WHERE name = ?");
+                statement2.setString(1, teamName);
+                ResultSet resultSet = statement2.executeQuery();
+                if (resultSet.next()) {
+                  JOptionPane.showMessageDialog(null, "Team already exists");
+                  firstName.setText("");
+                  return;
+                }
+
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (name) VALUES (?)");
                 statement.setString(1, teamName);
                 statement.executeUpdate();

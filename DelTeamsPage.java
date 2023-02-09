@@ -52,6 +52,9 @@ public class DelTeamsPage extends JPanel{
                     Statement statement = conn.createStatement();
                     statement.executeUpdate("DELETE FROM teams WHERE name = '" + teamListLable.getSelectedItem() + "'");
                     statement.executeUpdate("DELETE FROM teams2 WHERE name = '" + teamListLable.getSelectedItem() + "'");
+                    //write a statement to delete all employees from the team with the same name as the team being deleted
+
+                    statement.executeUpdate("DELETE FROM employees WHERE team = '" + teamListLable.getSelectedItem() + "'");
                     conn.close();
                     JOptionPane.showMessageDialog(null, "Team Deleted Successfully");
                     Pages.AddEmployeesPage.refreshTeamList();
@@ -59,6 +62,7 @@ public class DelTeamsPage extends JPanel{
                     Pages.AddTasksDeadlinesPage.refreshTeamList();
                     Pages.Home.updateTable();
                     Pages.Home.updateTeams();
+                    Pages.Home.updateEmps();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
